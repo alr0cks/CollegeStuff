@@ -1,0 +1,83 @@
+sudo mysql -u root -p
+
+CREATE TABLE Employee
+    -> (
+    -> SSN int(11),
+    -> E_Name varchar(10),
+    -> E_Mname varchar(10),
+    -> E_Lname varchar(10),
+    -> DOB date,
+    -> Address varchar(10),
+    -> Gender char(1),
+    -> Salary float(6,2)
+    -> ,
+    -> PRIMARY KEY (SSN)
+    -> );
+
+CREATE TABLE Projects
+    -> (
+    -> P_Name varchar(10),
+    -> P_id int(11),
+    -> P_Loc varchar(10),
+    -> PRIMARY KEY (P_id)
+    -> )
+    -> ;
+
+CREATE TABLE Department
+    -> (
+    -> D_Number int(11),
+    -> D_Name varchar(10),
+    -> PRIMARY KEY (D_Number)
+    -> )
+    -> ;
+
+CREATE TABLE Department_Location
+    -> (
+    -> D_LNumber int(11),
+    -> D_Location varchar(10),
+    -> FOREIGN KEY (D_LNumber) REFERENCES Department (D_Number)
+    -> )
+    -> ;
+
+ALTER TABLE Projects ADD P_DNo int(11);
+
+ALTER TABLE Projects ADD FOREIGN KEY(P_DNo) REFERENCES Department(D_Number);
+
+ALTER TABLE Department
+    -> ADD MGR_Date date;
+
+ALTER TABLE Department ADD MGR_SSN int(11);
+
+ALTER TABLE Department ADD FOREIGN KEY(MGR_SSN) REFERENCES Employee(SSN);
+
+CREATE TABLE Dependent
+    -> (
+    -> Dependent_SSN int(11),
+    -> Name varchar(10),
+    -> Sex char(1),
+    -> DOB date,
+    -> Rel_Name varchar(10),
+    -> FOREIGN KEY(Dependent_SSN) REFERENCES Employee(SSN)
+    -> );
+
+CREATE TABLE Works
+    -> (
+    -> P_WId int(11),
+    -> W_SSN int(11),
+    -> Hours int(11),
+    -> FOREIGN KEY(P_WId) REFERENCES Projects(P_Id),
+    -> FOREIGN KEY(W_SSN) REFERENCES Employee(SSN)
+    -> )
+    -> ;
+
+ALTER TABLE Employee
+    -> ADD D_No int(11);
+
+ALTER TABLE Employee 
+    -> ADD FOREIGN KEY(D_No) REFERENCES Department(D_Number);
+
+ALTER TABLE Employee
+    -> ADD Super_SSN int(11);
+
+ALTER TABLE Employee
+    -> ADD FOREIGN KEY(Super_SSN) REFERENCES Employee(SSN);

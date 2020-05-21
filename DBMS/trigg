@@ -1,0 +1,298 @@
+mysql> CREATE DATABASE Triggs;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE Triggs;
+Database changed
+mysql> CREATE TABLE Emp
+    -> (
+    -> EmpNo int(10) PRIMARY KEY,
+    -> EName varchar(20),
+    -> Jobid int(10)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> CREATE TABLE Job
+    -> (
+    -> Job_Id int(10) PRIMARY KEY,
+    -> MinSal float(8,2),
+    -> MaxSal float(8,2)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> ALTER TABLE Emp
+    -> ADD FOREIGN KEY(Jobid) REFERENCES Job(Job_Id);
+Query OK, 0 rows affected (0.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Emp VALUES ( 101, "Akash", NULL );
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO Emp VALUES ( 102, "Aksham", NULL );
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO Emp VALUES ( 103, "Aakriti", NULL );
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO Emp VALUES ( 104, "Astha", NULL );
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO Job VALUES
+    -> (
+    -> 001,
+    -> 20000.00,
+    -> 70000.00
+    -> )
+    -> ;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO Job VALUES ( 002, 10000.00, 60000.00 );
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO Job VALUES ( 003, 50000.00, 100000.00 );
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO Job VALUES ( 004, 30000.00, 80000.00 );
+Query OK, 1 row affected (0.03 sec)
+
+mysql> UPDATE Emp
+    -> SET Jobid=3 WHERE EName="Akash";
+Query OK, 0 rows affected (0.02 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET Jobid=2 WHERE EName="Aksham";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Jobid=1 WHERE EName="Astha";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Jobid=4 WHERE EName="Aakriti";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> ALTER TABLE Emp 
+    -> ADD COLUMN Sal float(8,2);
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Emp
+    -> SET Sal=95000.00 WHERE EName="Akash";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Sal=55000.00 WHERE EName="Aksham";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Sal=45000.00 WHERE EName="Astha";
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Sal=66000.00 WHERE EName="Aakriti";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++-------+---------+-------+----------+
+| EmpNo | EName   | Jobid | Sal      |
++-------+---------+-------+----------+
+|   101 | Akash   |     3 | 95000.00 |
+|   102 | Aksham  |     2 | 55000.00 |
+|   103 | Aakriti |     4 | 66000.00 |
+|   104 | Astha   |     1 | 45000.00 |
++-------+---------+-------+----------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Job;
++--------+----------+-----------+
+| Job_Id | MinSal   | MaxSal    |
++--------+----------+-----------+
+|      1 | 20000.00 |  70000.00 |
+|      2 | 10000.00 |  60000.00 |
+|      3 | 50000.00 | 100000.00 |
+|      4 | 30000.00 |  80000.00 |
++--------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Emp_Log
+    -> (EmpNo int(10) PRIMARY KEY,
+    -> EName varchar(20),
+    -> Jobid int(10),
+    -> Sal float(8,2)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> ALTER TABLE Emp_Log
+    -> ADD FOREIGN KEY(Jobid) REFERENCES Job(Job_Id);
+Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Emp_Log ADD Time_of_Exec time;
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC Emp_Log;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EmpNo        | int(10)     | NO   | PRI | NULL    |       |
+| EName        | varchar(20) | YES  |     | NULL    |       |
+| Jobid        | int(10)     | YES  | MUL | NULL    |       |
+| Sal          | float(8,2)  | YES  |     | NULL    |       |
+| Time_of_Exec | time        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+
+mysql> CREATE TRIGGER trigg
+    -> BEFORE
+    -> INSERT ON Emp
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO Emp_Log VALUES(NEW.EmpNo,NEW.EName,NEW.Jobid,NEW.Sal,current_time());
+    -> END//
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> INSERT INTO Emp VALUES
+    -> (
+    -> 105,
+    -> "Aniket",
+    -> 1,
+    -> 25000.00
+    -> )
+    -> ;
+    -> //
+Query OK, 1 row affected (0.08 sec)
+
+mysql> SELECT * FROM Emp_Log//
++-------+--------+-------+----------+--------------+
+| EmpNo | EName  | Jobid | Sal      | Time_of_Exec |
++-------+--------+-------+----------+--------------+
+|   105 | Aniket |     1 | 25000.00 | 14:46:40     |
++-------+--------+-------+----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TRIGGER t
+    -> AFTER DELETE ON Emp
+    -> FOR EACH ROW
+    -> BEGIN
+    -> INSERT INTO Emp_Log VALUES(OLD.EmpNo,OLD.EName,OLD.Jobid,OLD.Sal,current_time());
+    -> END//
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DELETE FROM Emp 
+    -> WHERE EName="Astha"//
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM Emp_Log//
++-------+--------+-------+----------+--------------+
+| EmpNo | EName  | Jobid | Sal      | Time_of_Exec |
++-------+--------+-------+----------+--------------+
+|   104 | Astha  |     1 | 45000.00 | 14:49:53     |
+|   105 | Aniket |     1 | 25000.00 | 14:46:40     |
++-------+--------+-------+----------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Emp ADD COLUMN Perks float(5,2);
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Emp SET Perks=200.00 WHERE EName="Akash";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Perks=100.00 WHERE EName="Aksham";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Perks=500.00 WHERE EName="Aakriti";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Emp SET Perks=600.00 WHERE EName="Aniket";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++-------+---------+-------+----------+--------+
+| EmpNo | EName   | Jobid | Sal      | Perks  |
++-------+---------+-------+----------+--------+
+|   101 | Akash   |     3 | 95000.00 | 200.00 |
+|   102 | Aksham  |     2 | 55000.00 | 100.00 |
+|   103 | Aakriti |     4 | 66000.00 | 500.00 |
+|   105 | Aniket  |     1 | 25000.00 | 600.00 |
++-------+---------+-------+----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TRIGGER badhao
+    -> AFTER UPDATE ON Job                                               -> FOR EACH ROW
+    -> BEGIN
+    -> UPDATE Emp SET Emp.Sal=Emp.Sal + (NEW.MinSal-OLD.MinSal);
+    -> END//
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> UPDATE Job
+    -> SET MinSal=60000.00 WHERE Job_Id=3//
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp//
++-------+---------+-------+-----------+--------+
+| EmpNo | EName   | Jobid | Sal       | Perks  |
++-------+---------+-------+-----------+--------+
+|   101 | Akash   |     3 | 105000.00 | 200.00 |
+|   102 | Aksham  |     2 |  65000.00 | 100.00 |
+|   103 | Aakriti |     4 |  76000.00 | 500.00 |
+|   105 | Aniket  |     1 |  35000.00 | 600.00 |
++-------+---------+-------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE Job SET MinSal=50000.00 WHERE Job_Id=4//
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp//
++-------+---------+-------+-----------+--------+
+| EmpNo | EName   | Jobid | Sal       | Perks  |
++-------+---------+-------+-----------+--------+
+|   101 | Akash   |     3 | 125000.00 | 200.00 |
+|   102 | Aksham  |     2 |  85000.00 | 100.00 |
+|   103 | Aakriti |     4 |  96000.00 | 500.00 |
+|   105 | Aniket  |     1 |  55000.00 | 600.00 |
++-------+---------+-------+-----------+--------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Emp//
++-------+---------+-------+-----------+--------+
+| EmpNo | EName   | Jobid | Sal       | Perks  |
++-------+---------+-------+-----------+--------+
+|   101 | Akash   |     3 | 125000.00 | 200.00 |
+|   102 | Aksham  |     2 |  85000.00 | 100.00 |
+|   103 | Aakriti |     4 |  96000.00 | 500.00 |
+|   105 | Aniket  |     1 |  55000.00 | 600.00 |
+|   106 | Ashu    |     1 |  40000.00 |  50.00 |
++-------+---------+-------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Job
+    -> SET MinSal=30000.00 WHERE Job_Id=1//
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp//
++-------+---------+-------+-----------+--------+
+| EmpNo | EName   | Jobid | Sal       | Perks  |
++-------+---------+-------+-----------+--------+
+|   101 | Akash   |     3 | 135000.00 | 200.00 |
+|   102 | Aksham  |     2 |  95000.00 | 100.00 |
+|   103 | Aakriti |     4 | 106000.00 | 500.00 |
+|   105 | Aniket  |     1 |  65000.00 | 600.00 |
+|   106 | Ashu    |     1 |  50000.00 |  50.00 |
++-------+---------+-------+-----------+--------+
+5 rows in set (0.00 sec)
+

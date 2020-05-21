@@ -1,0 +1,102 @@
+mysql> CREATE TABLE t
+    -> (
+    -> S1 INT(8)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> INSERT INTO t VALUES(1);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO t VALUES(2);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO t VALUES(3);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO t VALUES(4);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO t VALUES(5);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO t VALUES(6);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO t VALUES(7);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM t;
++------+
+| S1   |
++------+
+|    1 |
+|    2 |
+|    3 |
+|    4 |
+|    5 |
+|    6 |
+|    7 |
++------+
+7 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE p25(OUT return_val INT)
+    -> BEGIN
+    -> DECLARE a,b INT;
+    -> DECLARE cur_1 CURSOR FOR SELECT s1 FROM t;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET b=1;
+    -> OPEN cur_1;
+    -> REPEAT
+    -> FETCH cur_1 INTO a;
+    -> UNTIL b=1
+    -> END REPEAT;
+    -> CLOSE cur_1;
+    -> SET return_val = a;
+    -> END//
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DELIMITER ;
+
+mysql> CALL p25(@M);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT @M;
++------+
+| @M   |
++------+
+|    7 |
++------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Department//
++----------+-----------+------------+---------+----------+
+| D_Number | D_Name    | MGR_DATE   | MGR_SSN | totalSal |
++----------+-----------+------------+---------+----------+
+|      100 | Testing   | 2009-08-27 |      14 | 19265.40 |
+|      101 | Marketing | 2012-11-12 |      11 | 19265.40 |
+|      106 | HR        | 2012-11-02 |      12 | 19265.40 |
+|      112 | IT        | 2011-08-11 |      10 | 19265.40 |
+|      120 | DevOps    | 2010-01-09 |      13 | 19265.40 |
++----------+-----------+------------+---------+----------+
+5 rows in set (0.00 sec)
+
+
+mysql> CREATE PROCEDURE updateSal() BEGIN DECLARE done INT DEFAULT 0; DECLARE current_dnum INT; DECLARE dnum_cur CURSOR FOR SELECT D_Number FROM Department; DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1; OPEN dnum_cur; REPEAT FETCH dnum_cur INTO current_dnum; UPDATE Department SET totalSal = (SELECT SUM(Salary) FROM Employee WHERE D_Number=current_dnum) WHERE D_Number = current_dnum; UNTIL DONE END REPEAT; CLOSE dnum_cur; END//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL updateSal()//
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> SELECT * FROM Department//
++----------+-----------+------------+---------+----------+
+| D_Number | D_Name    | MGR_DATE   | MGR_SSN | totalSal |
++----------+-----------+------------+---------+----------+
+|      100 | Testing   | 2009-08-27 |      14 | 19265.40 |
+|      101 | Marketing | 2012-11-12 |      11 | 19265.40 |
+|      106 | HR        | 2012-11-02 |      12 | 19265.40 |
+|      112 | IT        | 2011-08-11 |      10 | 19265.40 |
+|      120 | DevOps    | 2010-01-09 |      13 | 19265.40 |
++----------+-----------+------------+---------+----------+
+5 rows in set (0.00 sec)
+
