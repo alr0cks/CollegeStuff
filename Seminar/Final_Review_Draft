@@ -1,0 +1,57 @@
+{
+Khurana M., Yadav R., Kumari M. (2018) Buffer Overflow and SQL Injection: To Remotely Attack and Access Information. In: Bokhari M., Agrawal N., Saini D. (eds) Cyber Security. Advances in Intelligent Systems and Computing, vol 729. Springer, Singapore
+
+This paper speaks about various attacks used to exploit buffer overflows vulnerability, and their behaviour in different mechanisms such as Denial of Service Attacks and Inject attack code. It also speaks about goals of buffer overflow attack to exploit vulnerability. Such as Jump to Random Memory Location, To Place Malicious Code in Victim’s Program Address Space. It also speaks about challenges in buffer overflow attack.
+
+}
+
+{
+
+Yang Zhao, Xingzhong Du, Paddy Krishnan, and Cristina Cifuentes. 2018. Buffer overflow detection for C programs is hard to learn. In Companion Proceedings for the ISSTA/ECOOP 2018 Workshops (ISSTA ’18). Association for Computing Machinery, New York, NY, USA, 8–9. DOI:https://doi.org/10.1145/3236454.3236455
+
+This paper speaks about feature extraction buffer overflow attacks using supervised learning, and calssification and validation of injection codes through support vector machines (svm) and gradient boost tree (XGBoost). It tells about general usability through learning based methods. Its aim is to identify machine learning techniques that can be used to replace hand-crafted static analysis tools.
+
+}
+
+{
+
+Rogers, Alexis, L. and Sowers, Ryan, 2019 Calhoun,  DEFENSIVE BINARY CODE INSTRUMENTATION TO PROTECT AGAINST BUFFER OVERFLOW ATTACKS, In Monterey, CA; Naval Postgraduate School.
+
+This paper speaks about What is Buffer Overflow and it's working. It dives deep into various Research Methodologies such as tools used, execution structure, instruction modification, etc.
+
+}
+
+{
+
+Zhiyong Jin, Yongfu Chen, Tian Liu, Kai Li, Zhenting Wang, and Jiongzhi Zheng. 2019. A Novel and Fine-grained Heap Randomization Allocation Strategy for Effectively Alleviating Heap Buffer Overflow Vulnerabilities. In Proceedings of the 2019 4th International Conference on Mathematics and Artificial Intelligence (ICMAI 2019). Association for Computing Machinery, New York, NY, USA, 115–122. DOI:https://doi.org/10.1145/3325730.3325738
+
+Ning Huang et al 2019 IOP Conf. Ser.: Earth Environ. Sci.252 042100
+
+These papers explains about heap buffer overflows and implementation exploit canstraint constructor. It also speaks about different algorithms such as Ptmalloc Algorithm and memory randamization strategies.
+
+}
+
+{
+
+T. Ye, L. Zhang, L. Wang and X. Li, "An Empirical Study on Detecting and Fixing Buffer Overflow Bugs," 2016 IEEE International Conference on Software Testing, Verification and Validation (ICST), Chicago, IL, 2016, pp. 91-101, doi: 10.1109/ICST.2016.21.
+
+L. Xu, W. Jia, W. Dong and Y. Li, "Automatic Exploit Generation for Buffer Overflow Vulnerabilities," 2018 IEEE International Conference on Software Quality, Reliability and Security Companion (QRS-C), Lisbon, 2018, pp. 463-468, doi: 10.1109/QRS-C.2018.00085.
+
+These papers show cases the the detection mechanism of buffer overflow attacks and how the bugs are fixed for vulnerable programs. It also teaches how explits are created and how bypass system works.
+
+}
+
+
+
+{
+
+M. Ma, L. Chen and G. Shi, "Dam: A Practical Scheme to Mitigate Data-Oriented Attacks with Tagged Memory Based on Hardware," 2019 26th Asia-Pacific Software Engineering Conference (APSEC), Putrajaya, Malaysia, 2019, pp. 204-211, doi: 10.1109/APSEC48747.2019.00036.
+
+This paper teaches different types of mitigation techniques such as data oriented attacks and defences, and requirements in generating data-oriented attacks.
+
+}
+
+ 
+
+
+
