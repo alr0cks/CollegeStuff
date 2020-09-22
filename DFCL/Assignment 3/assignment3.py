@@ -1,28 +1,57 @@
-import csv
+import pandas as pd
 
-leng = 0
-val = {}
-lip = []
-dip = []
-pp = []
+col_list = ["LIP", "DIP", "PN"]
+file = pd.read_csv("./logs1.csv", usecols=col_list)
 
-with open("logs1.csv") as csvfile:
-    readCSV = csv.reader(csvfile, delimiter=",")
-    for row in readCSV:
-        lip.append(row[0])
-        dip.append(row[1])
-        pp.append(row[2])
-    val = {"LIP": lip, "DIP": dip, "PP": pp}
-    print(lip[0], dip[0], pp[0])
-    for row in readCSV:
-        print(row[0]+row[1]+row[2])
-    LIP_inp = str(input("Enter the LIP")
-	for _ in range(len(lip)):
-		if LIP_inp == lip[_]:
-			print(lip[_] + "  " + dip[_] + "  " + pp[_])
-    DIP_inp = str(input("Enter the DIP")
-	for _ in range(len(dip)):
-		if DIP_inp == dip[_]:
-			print(lip[_] + "  " + dip[_] + "  " + pp[_])
 
-            #Combination of LIP, DIP. -LIP,Port Number, -DIP,Port Number, -LIP,DIP,Port Number
+def source(ip1, file):
+    selec = pd.DataFrame(file.loc[file["LIP"] == ip1])
+    return selec
+
+
+def des(ip1, file):
+    selec = pd.DataFrame(file.loc[file["DIP"] == ip1])
+    return selec
+
+
+def proto(ip1, file):
+    selec = pd.DataFrame(file.loc[file["PN"] == ip1])
+    return selec
+
+
+print("Select an option:")
+print("a)1.LIP  ->2.BIP  ->3.PN")
+print("b)1.LIP  ->2.BIP")
+print("c)LIP")
+print("d)BIP")
+print("e)PN")
+option = str(input())
+selec = file
+if option == "a":
+    sip = str(input())
+    dip = str(input())
+    pip = str(input())
+    selec = source(sip, selec)
+    selec = des(dip, selec)
+    selec = proto(pip, selec)
+    print(selec)
+elif option == "b":
+    sip = str(input())
+    dip = str(input())
+    selec = source(sip, selec)
+    selec = des(dip, selec)
+    print(selec)
+elif option == "c":
+    sip = str(input())
+    selec = source(sip, selec)
+    print(selec)
+elif option == "d":
+    dip = str(input())
+    selec = des(dip, selec)
+    print(selec)
+elif option == "e":
+    pip = str(input())
+    selec = proto(pip, selec)
+    print(selec)
+else:
+    print("Invalid Option!")
