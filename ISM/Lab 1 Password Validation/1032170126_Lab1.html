@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <meta charset="utf-8" http-equiv="encoding" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Password Validation</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap4.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      @import url(https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css);
+      @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css);
+    </style>
+
+    
+
+  </head>
+  <body style="background-color:black;">
+    <div class="global-container">
+        <div class="card login-form">
+            <div class="card-body">
+                <h3 class="card-title text-center">Password Validation</h3>
+                <div class="card-text">
+                    <!--
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div> -->
+                    <form method="post">
+                        <!-- to error: add class "has-danger" -->
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input
+                                    type="email" class="form-control form-control-sm" id="email" name="email"
+                                    aria-describedby="emailHelp" required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+
+                            <!-- Type is not password, so that can show password for verification-->
+                            <input class="form-control form-control-sm" id="password" name="password"
+                                    oninput="verifyPassword();" onfocus="checklistVisible();" required/>
+                            <ul id="checklist" style="display: none;" class="list-unstyled">
+                              <li id="8-characters">Atleast 8 Character</li>
+                              <li id="low-upper-case">1 lowercase &amp; 1 uppercase</li>
+                              <li id="one-number">1 number (0-9)</li>
+                              <li id="one-special-char">1 Special Character.</li>
+                            </ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" value="">
+                            Sign up
+                        </button>
+
+                        <script>
+                          function checklistVisible(){
+                            document.getElementById("checklist").style.display = "block";
+                          }
+
+                          
+                          function verifyPassword() {  
+                              var password = document.getElementById("password").value;
+                              
+                              // Minimum password length 8  
+                              if (password.length < 8)
+                                document.getElementById("8-characters").style.color = "red";  
+                              else
+                                document.getElementById("8-characters").style.color = "green";
+
+                              // One Lower-case and one Upper-case character
+                              if (password.match(/[a-z]/g) && password.match(/[A-Z]/g))
+                                document.getElementById("low-upper-case").style.color = "green";  
+                              else
+                                document.getElementById("low-upper-case").style.color = "red";
+
+                              // One number at least
+                              if (password.match(/[0-9]/g))
+                                document.getElementById("one-number").style.color = "green";  
+                              else
+                                document.getElementById("one-number").style.color = "red";
+
+
+                              // One special character
+                              if (password.match(/[!@#$%^&*_=+.?]/g))
+                                document.getElementById("one-special-char").style.color = "green";  
+                              else
+                                document.getElementById("one-special-char").style.color = "red";
+                          }
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
